@@ -22,7 +22,7 @@ function parseData(html) {
 	 * Output data to pg or wherever later.
 	 * @type {Array}
 	 */
-	var output = [];
+	var outputEvents = [];
 
 
 	// Get descriptive metadata.
@@ -60,27 +60,29 @@ function parseData(html) {
 	// Handle the actual puck events.
 	
 	/**
-	 * All events. 
+	 * All puck events are classed as 'evenColor', ie <tr class="evenColor">...</tr> 
 	 * @type {cheerio}
 	 */
-	var events = $('.evenColor');
+	var puckEvents = $('.evenColor');
 
 	/**
-	 * For all events we'll create an object and push it to output. 
+	 * For all events we'll create an object and push it to outputEvents. 
 	 * The object properties will depend on metadata.
 	 * @param  {Number} i     index
 	 * @param  {cheerio} elem  Cheerio element. 
-	 * @return {void}  Pushes to output array. 
+	 * @return {void}  Pushes to outputEvents array. 
 	 */
-	events.each(function perEvent(i, elem) {
+	puckEvents.each(function perEvent(i, elem) {
 	
 		/**
 		 * Stringy raw data points. 
+		 * ie Columns in the rows of puck events. 
 		 * @type {Array}
 		 */
 		var dataPoints = $(this).children('td');
-			// check that metadata and data meet the barest minimum of compatbility.
-			if (dataPoints.length !== metadata.length) return log('Metadata and data dont match length');
+
+		// check that metadata and data meet the barest minimum of compatbility.
+		if (dataPoints.length !== metadata.length) return log('Metadata and data dont match length');
 
 
 		// The dataPoints hold flast data and nested-table data.
@@ -88,14 +90,18 @@ function parseData(html) {
 		// The nested tables are players on the ice (position, number) for each team. 
 
 		/**
+		 * First we'll get the flat data. Low hanging fruit and that.
 		 * Holds depth=1 puck events. (Not that table-in-a-table shit).
 		 * @type {Object}
 		 */		
 		var puckEventStats = {};
+
+		/**
+		 * Then we'll get the damn nested tables data which is teams' players.
+		 * @type {Object}
+		 */
 		var teamStats = {};
 
-
-		// First we'll get the flat data. Low hanging fruit and that.
 		
 		// Only for the td's WITHOUT tables inside of them.
 		dataPoints.not(function(i, elem) {
@@ -160,14 +166,14 @@ function parseData(html) {
 		var theEvent = merge(puckEventStats, teamStats);
 		// log(util.inspect(theEvent));
 
-		output.push(theEvent);
+		outputEvents.push(theEvent);
 
 	}); // end events.each
 
 
 	// Return JSON array. 
-	// log(util.inspect(output));
-	return output; 
+	// log(util.inspect(outputEvents));
+	return outputEvents; 
 }
 
 function handleHTML(html) {
