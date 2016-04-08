@@ -7,7 +7,7 @@ var exampleFile = './localStore/test-input.html';
 function handleHTML(html) {
 	
 	// Save to local file for now. 
-	var whereToSave = './localStore/output-test.json';
+	var whereToSave = './localStore/test-output.json';
 	
 	var parsedEvents = parseable.playByPlay(html);
 	var parsedTeamData = parseable.jumbotron(html).teamData;
