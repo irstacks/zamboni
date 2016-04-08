@@ -1,20 +1,16 @@
-var requestable = require('./requestable.js'); // for getting dat data
 var cheerio = require('cheerio'); // for parsing html like jquery
-var util = require('util'); // for inspecting objects
-var merge = require('merge'); // conveniently merge objects
 var fs = require('fs'); // we'll write the output data back to a nice file for looking at
+var util = require('util'); // for inspecting objects on logging and debuggery
+var merge = require('merge'); // conveniently merge objects
+require('./log.js'); // for easy logging
 
 
-var exampleUrl = 'http://www.nhl.com/scores/htmlreports/20152016/PL010003.HTM';
-var exampleFile = './localStore/test-input.html';
-
-
-function log(thingToLog) {
-	console.log(thingToLog);
-}
-
-
-function parseData(html) {
+/**
+ * Returns array of game events. 
+ * @param  {String} html  HTML string in body of http response. 
+ * @return {Array}      Game events.
+ */
+exports.playByPlay = function(html) {
 
 	var $ = cheerio.load(html);
 
@@ -152,7 +148,6 @@ function parseData(html) {
 				
 				// TODO: You could do something better here for referencing metadata. 
 				// This is a pretty dirty way. 
-				// teamStats[j] = team;
 				if (j === 0) {
 					teamStats[metadata[6]] = team;
 				} else {
@@ -176,18 +171,72 @@ function parseData(html) {
 	return outputEvents; 
 }
 
-function handleHTML(html) {
-	var o = parseData(html);
-	var whereToSave = './localStore/output-test.json';
-	fs.writeFile(whereToSave, JSON.stringify(o), function(err) {
-		if (err) {
-			return log(err);
-		}
-		log('Saved output! @ ' + whereToSave);
-	});
+
+
+exports.jumbotron = function(html) {
+	
+	var $ = cheerio.load(html);
+	var visitorTable = $('table#Visitor');
+	var homeTable = $('table#Home');
+	var gameInfoTable = $('table#GameInfo');
+	
+
+	/**
+	 * Get the middle stuff. 
+	 * @param  {cheerio table == Object} table  The middling table.
+	 * @return {Object} md       Includes date, attendance+location, start and end times, game #
+	 */
+	var parseMetadata = function(table) {
+		var md = {};
+
+		md.date = table.children('tr').eq(3).children('td').first().text();
+		md.assesInSeats = table.children('tr').eq(4).children('td').first().text();
+		md.clocks = table.children('tr').eq(5).children('td').first().text();
+		md.gameNum = table.children('tr').eq(6).children('td').first().text();
+
+		return md;
+	};
+
+
+	/**
+	 * Home and visitor in the scoreboard should be symmetrical. 
+	 * @param {cheerio table == Object} table Table with one team's data.
+	 * @return {Object} team  Includes score, team name, imageurl
+	 */
+	var parseTeamScoreboard = function(table) {
+		var tm = {};
+		tm.name = table.find('td').last().html().split('<br>')[0];
+		tm.games = table.find('td').last().html().split('<br>')[1];
+		
+		// find image by team name
+		tm.imageUrl = table.find('img[alt="'+tm.name+'"]').attr('src');
+		// lookat dat sloppy inline css.  
+		tm.score = table.find('td[style="font-size: 40px;font-weight:bold"]').first().text();
+
+		return tm;
+	};
+
+
+	// Parse em an set em. 
+	var gameData = parseMetadata(gameInfoTable);
+	var teamData = {
+		home: parseTeamScoreboard(homeTable),
+		visitor: parseTeamScoreboard(visitorTable)
+	};
+
+	return {
+		gameData: gameData,
+		teamData: teamData,
+
+		// Return the function just in case you need em on the fly.
+		// As far as modularization goes, this is approach is probably 
+		// more extensible in the long haul.
+		parseTeamScoreboard: parseTeamScoreboard,
+		parseMetadata: parseMetadata
+	};
 }
 
-requestable.locally(exampleFile, handleHTML);
+
 
 
 
