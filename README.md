@@ -1,5 +1,5 @@
 # Scrape them NHL stats. 
-Runs on __node.js__.  Turns [this](./localStore/test-input.html) into [this](./localStore/output-test.json). 
+Runs on __node.js__.  Turns [this](./localStore/test-input.html) into [this](./localStore/test-output.json). 
 
 
 ### How to do it. 
