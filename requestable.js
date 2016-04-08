@@ -15,7 +15,6 @@ exports.storeLocal = function(toFile, body) {
 	});
 };
 
-
 exports.locally = function (fromFile, callback) {
 	return fs.readFile(fromFile, 'utf8', function(err, body) {
 		// if (err) throw err;

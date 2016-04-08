@@ -6,7 +6,7 @@ var fs = require('fs'); // we'll write the output data back to a nice file for l
 
 
 var exampleUrl = 'http://www.nhl.com/scores/htmlreports/20152016/PL010003.HTM';
-var exampleFile = './localStore/test';
+var exampleFile = './localStore/test-input.html';
 
 
 function log(thingToLog) {
