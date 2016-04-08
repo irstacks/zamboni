@@ -1,6 +1,7 @@
-scrape the nhl stats
-
+scrapes some nhl stats
 runs on __node.js__
+
+Turns [this](./localStore/test-input.html) into [this](./localStore/output-test.json). 
 
 - clone or copy and paste, then
 ```shell
