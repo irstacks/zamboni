@@ -1,0 +1,27 @@
+{
+  "name": "zamboni",
+  "version": "1.0.0",
+  "description": "cuz its scrappy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/irstacks/zamboni.git"
+  },
+  "keywords": [
+    "scrape",
+    "ice"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/irstacks/zamboni/issues"
+  },
+  "homepage": "https://github.com/irstacks/zamboni#readme",
+  "dependencies": {
+    "cheerio": "^0.20.0",
+    "request": "^2.70.0"
+  }
+}
