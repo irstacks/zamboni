@@ -1,7 +1,7 @@
 # Scrape them NHL stats. 
 Runs on __node.js__.  Turns [this](./localStore/test-input.html) into [this](./localStore/test-output.json). 
 
-Because [this](http://finzi.psych.upenn.edu/library/nhlscrapr/html/00Index.html) isn't cutting it. 
+Because I don't know how to use [this](http://finzi.psych.upenn.edu/library/nhlscrapr/html/00Index.html). 
 
 ### How to do it. 
 - clone or copy and paste, then
