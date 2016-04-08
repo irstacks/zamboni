@@ -21,4 +21,5 @@ function handleHTML(html) {
 }
 
 // Do the actual gettering. 
+// data.getFromUrl(exampleUrl, handleHTML); // Turn this on if you want dat live shi. 
 data.getFromFile(exampleFile, handleHTML);

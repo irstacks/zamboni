@@ -10,8 +10,10 @@ $ npm install
 $ node app.js
 ```
 
-Example url and html hanging out at the top of `parseable.js`. 
+### How to pick what data gets used.
+Change the url and/or html hanging out at the top of `app.js`. 
+If you use a url instead of html you need to change the `data` method in there too. 
 
-Next steps:
+### What's next?
 - Figure out how to get a lot of sites to scrape. 
 - Put the parsed data somewhere better than in json files. __Mongo__ might be an obvious choice since out is already in JSON. 
