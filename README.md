@@ -6,9 +6,15 @@ Because I don't know how to use [this](http://finzi.psych.upenn.edu/library/nhls
 ### How to do it. 
 - clone or copy and paste, then
 ```shell
-$ cd where/it/is
+$ cd path/to/zamboni
 $ npm install
 $ node app.js
+```
+
+**Oh, you want to run it on the server??** 
+```shell
+$ cd got/tron/zamboni
+$ nohup node app.js > /dev/null 2>&1 &
 ```
 
 ### How to pick what data gets used.
