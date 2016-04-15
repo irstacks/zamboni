@@ -9,7 +9,7 @@ var util = require('util');
 // var exampleFile = './testStorage/test-input.html';
 
 // TODO: implement a basic kind of local storage for history of trials
-var year = 2015;
+var year = 2014;
 var gameSerialConst = [1, 0, 1]; // from the beginning. pre season, i think
 var haveFailed = 0;
 var dataOutFolder = './dataOut/' + year.toString() + (year + 1).toString() + '/';
