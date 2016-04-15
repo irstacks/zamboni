@@ -1,5 +1,5 @@
 var cheerio = require('cheerio'); // for parsing html like jquery
-var fs = require('fs'); // we'll write the output data back to a nice file for looking at
+var fs = require('fs-extra'); // we'll write the output data back to a nice file for looking at
 var util = require('util'); // for inspecting objects on logging and debuggery
 var merge = require('merge'); // conveniently merge objects
 require('./log.js'); // for easy logging

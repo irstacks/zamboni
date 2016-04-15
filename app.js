@@ -1,4 +1,5 @@
 var data = require('./data.js');
+var fs = require('fs-extra');
 var parseable = require('./parseable.js');
 var gameUrl = require('./url-maker.js');
 var log = require ('./log.js');
@@ -10,11 +11,9 @@ var util = require('util');
 
 // see ./leftoff for latest resource. 
 // All you need to do to keep growing the library is his node app.js
-var year = 0;
+var year;
 var gameSerialConst = []; // from the beginning. pre season, i think
 var haveFailed = 0;
-var dataOutFolder = './dataOut/' + year.toString() + (year + 1).toString() + '/';
-var failOutFolder = './failOut/' + year.toString() + (year + 1).toString() + '/';
 
 // Game number formatting helpers.
 function zeroPad(int) {
@@ -67,6 +66,7 @@ function incrementFailure() {
 // Increment game num counter.
 function handle404() {
 	console.log('Handling 404');
+	var failOutFolder = './failOut/' + year.toString() + (year + 1).toString() + '/';
 	var whereToSave = failOutFolder + makeGameNum(gameSerialConst).toString() + '.txt';
 	data.saveToFile(whereToSave, "404");
 	incrementFailure();
@@ -75,6 +75,7 @@ function handle404() {
 // Parse response HTML for game data.
 function handleSuccess(html) {
 	console.log('Handling success');
+	var dataOutFolder = './dataOut/' + year.toString() + (year + 1).toString() + '/';
 	var whereToSave = dataOutFolder + makeGameNum(gameSerialConst).toString() + '.json';
 	var game = {
 		meta: parseable.jumbotron(html).gameData,
@@ -90,15 +91,25 @@ function responseHandler(html) {
 	else {console.log('Response handling success.'); handleSuccess(html);}
 
 	// recursive shit. but important this is a callback for itself so it waits for the http request to be processed
-	if (gameSerialConst[0] < 4) {
-		var saveMe = JSON.stringify({year: year, gameSerial: gameSerialConst});
+	if (gameSerialConst[0] < 3) {
+
+		// just make sure we got the yearly folders in there
+		var yearsfolder = year.toString() + (year + 1).toString();
+		fs.ensureDirSync('./dataOut/' + yearsfolder);
+		fs.ensureDirSync('./failOut/' + yearsfolder);
 
 		// save progress to ./leftoff.json so we don't have to repeat ourselves in case of interruption
+		var saveMe = JSON.stringify({year: year, gameSerial: gameSerialConst});
 		data.saveToFile('./leftoff.json', saveMe, data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler));
-	} else if (year > 2012) {
-		var saveMe = JSON.stringify({year: year-1, gameSerial: [1,0,1]});
+	
+	// Move a year earlier unless arbitrary stop. 
+	} else if (year > 2000) {
+		var newYear = year-1;
+		var saveMe = JSON.stringify({year: newYear, gameSerial: [1,0,1]});
 		data.saveToFile('./leftoff.json', saveMe, data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler));
 		return console.log('Finished with the games you ordered.');
+	
+	// In the name of love, stop. 
 	} else {
 		var saveMe = JSON.stringify({year: year-1, gameSerial: [1,0,1]});
 		data.saveToFile('./leftoff.json', saveMe);
