@@ -19,6 +19,7 @@ exports.playByPlay = function(html) {
 	 * @type {Array}
 	 */
 	var outputEvents = [];
+	if ($('.table').length < 1) return outputEvents; // There is no data. Like 20142015/010002. 
 
 
 	// Get descriptive metadata.
@@ -179,7 +180,16 @@ exports.jumbotron = function(html) {
 	var visitorTable = $('table#Visitor');
 	var homeTable = $('table#Home');
 	var gameInfoTable = $('table#GameInfo');
-	
+
+	// Save erroring in case there is just nothing there, but not a 404. 
+	var returnableSafe = {
+		gameData: {},
+		teamData: {},
+		parseTeamScoreboard: parseTeamScoreboard,
+		parseMetadata: parseMetadata
+	};
+	if ($('.table').length < 1) return returnableSafe;
+
 
 	/**
 	 * Get the middle stuff. 
