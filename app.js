@@ -102,13 +102,14 @@ function responseHandler(html) {
 	} else if (year > 2007) {
 
 		year = year-1;
+		gameSerialConst = [1,0,1];
 
 		// make sure we got the yearly folders in there
 		var yearsfolder = year.toString() + (year + 1).toString();
 		fs.ensureDirSync('./dataOut/' + yearsfolder);
 		fs.ensureDirSync('./failOut/' + yearsfolder);
 
-		var saveMe = JSON.stringify({year: year, gameSerial: [1,0,1]});
+		var saveMe = JSON.stringify({year: year, gameSerial: gameSerialConst});
 		data.saveToFile('./leftoff.json', saveMe, data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler));
 		return console.log('Finished with the games you ordered.');
 	
