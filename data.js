@@ -6,12 +6,14 @@ var fs = require('fs');
  * @param  {String} body Body of file to write
  * @return {void}        Or error. 
  */
-exports.saveToFile = function(toFile, body) {
+exports.saveToFile = function(toFile, body, callback) {
 	return fs.writeFile(toFile, body, function(err) {
 		if (err) {
 			return console.log(err);
 		}
+
 		console.log('Saved it! @ ' + toFile );
+		callback;
 	});
 };
 

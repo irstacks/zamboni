@@ -10,7 +10,7 @@ var util = require('util');
 
 // TODO: implement a basic kind of local storage for history of trials
 var year = 2014;
-var gameSerialConst = [1, 0, 1]; // from the beginning. pre season, i think
+var gameSerialConst = []; // from the beginning. pre season, i think
 var haveFailed = 0;
 var dataOutFolder = './dataOut/' + year.toString() + (year + 1).toString() + '/';
 var failOutFolder = './failOut/' + year.toString() + (year + 1).toString() + '/';
@@ -90,16 +90,32 @@ function responseHandler(html) {
 
 	// recursive shit. but important this is a callback for itself so it waits for the http request to be processed
 	if (gameSerialConst[0] < 4) {
-		data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler);
+		var saveMe = JSON.stringify({year: year, gameSerial: gameSerialConst});
+
+		// save progress to ./leftoff.json so we don't have to repeat ourselves in case of interruption
+		data.saveToFile('./leftoff.json', saveMe, data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler));
+	} else if (year > 2012) {
+		var saveMe = JSON.stringify({year: year-1, gameSerial: [1,0,1]});
+		data.saveToFile('./leftoff.json', saveMe, data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler));
+		return console.log('Finished with the games you ordered.');
 	} else {
-		return console.log('finished with the games you ordere');
+		var saveMe = JSON.stringify({year: year-1, gameSerial: [1,0,1]});
+		data.saveToFile('./leftoff.json', saveMe);
+		return console.log('Finished with the games you ordered.');
 	}
 }
 
 // Do the actual gettering. 
 // data.getFromUrl(exampleUrl, responseHandler); // Turn this on if you want dat live shi. 
 // data.getFromFile(exampleFile, responseHandler);
-data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler);
+data.getFromFile('./leftoff.json', function(body) {
+	gameSerialConst = JSON.parse(body).gameSerial;
+	year = JSON.parse(body).year;
+	data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler);	
+});
+	
+
+
 
 
 

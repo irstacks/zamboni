@@ -19,7 +19,7 @@ exports.playByPlay = function(html) {
 	 * @type {Array}
 	 */
 	var outputEvents = [];
-	if ($('.table').length < 1) return outputEvents; // There is no data. Like 20142015/010002. 
+	if ($('table').length < 1) return outputEvents; // There is no data. Like 20142015/010002. 
 
 
 	// Get descriptive metadata.
@@ -188,7 +188,7 @@ exports.jumbotron = function(html) {
 		parseTeamScoreboard: parseTeamScoreboard,
 		parseMetadata: parseMetadata
 	};
-	if ($('.table').length < 1) return returnableSafe;
+	if ($('table').length < 1) return returnableSafe;
 
 
 	/**
