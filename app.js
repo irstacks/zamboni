@@ -8,8 +8,9 @@ var util = require('util');
 // var url404 = 'http://www.nhl.com/scores/htmlreports/20152016/PL090003.HTM';
 // var exampleFile = './testStorage/test-input.html';
 
-// TODO: implement a basic kind of local storage for history of trials
-var year = 2014;
+// see ./leftoff for latest resource. 
+// All you need to do to keep growing the library is his node app.js
+var year = 0;
 var gameSerialConst = []; // from the beginning. pre season, i think
 var haveFailed = 0;
 var dataOutFolder = './dataOut/' + year.toString() + (year + 1).toString() + '/';
