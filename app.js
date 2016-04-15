@@ -87,16 +87,12 @@ function handleSuccess(html) {
 }
 
 function responseHandler(html) {
+
 	if (html === 404) { console.log('Response handling 404.'); handle404(); }
 	else {console.log('Response handling success.'); handleSuccess(html);}
 
 	// recursive shit. but important this is a callback for itself so it waits for the http request to be processed
 	if (gameSerialConst[0] < 3) {
-
-		// just make sure we got the yearly folders in there
-		var yearsfolder = year.toString() + (year + 1).toString();
-		fs.ensureDirSync('./dataOut/' + yearsfolder);
-		fs.ensureDirSync('./failOut/' + yearsfolder);
 
 		// save progress to ./leftoff.json so we don't have to repeat ourselves in case of interruption
 		var saveMe = JSON.stringify({year: year, gameSerial: gameSerialConst});
@@ -104,7 +100,14 @@ function responseHandler(html) {
 	
 	// Move a year earlier unless arbitrary stop. 
 	} else if (year > 2007) {
+
 		year = year-1;
+
+		// make sure we got the yearly folders in there
+		var yearsfolder = year.toString() + (year + 1).toString();
+		fs.ensureDirSync('./dataOut/' + yearsfolder);
+		fs.ensureDirSync('./failOut/' + yearsfolder);
+
 		var saveMe = JSON.stringify({year: year, gameSerial: [1,0,1]});
 		data.saveToFile('./leftoff.json', saveMe, data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler));
 		return console.log('Finished with the games you ordered.');
