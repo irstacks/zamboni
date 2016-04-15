@@ -103,9 +103,9 @@ function responseHandler(html) {
 		data.saveToFile('./leftoff.json', saveMe, data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler));
 	
 	// Move a year earlier unless arbitrary stop. 
-	} else if (year > 2000) {
-		var newYear = year-1;
-		var saveMe = JSON.stringify({year: newYear, gameSerial: [1,0,1]});
+	} else if (year > 2007) {
+		var year = year-1;
+		var saveMe = JSON.stringify({year: year, gameSerial: [1,0,1]});
 		data.saveToFile('./leftoff.json', saveMe, data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler));
 		return console.log('Finished with the games you ordered.');
 	
