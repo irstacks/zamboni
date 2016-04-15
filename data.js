@@ -7,7 +7,7 @@ var fs = require('fs');
  * @return {void}        Or error. 
  */
 exports.saveToFile = function(toFile, body) {
-	fs.writeFile(toFile, body, function(err) {
+	return fs.writeFile(toFile, body, function(err) {
 		if (err) {
 			return console.log(err);
 		}
@@ -27,9 +27,19 @@ exports.getFromFile = function (fromFile, callback) {
 
 exports.getFromUrl = function(fromUrl, callback) {
 	return request(fromUrl, function(err, res, body) {
-		if (err) return console.log('ERRORORRRRR!', err);
+
+		if (err) console.log(err);
+		if (res.statusCode === 404) return callback(404);
+
 		if (!err && res.statusCode === 200) {
 			callback(body);
+			// return body;
+		} 
+
+		// Else status wasn't totally kosher.
+		else {
+			return console.log("Response not kosher. > ", res.statusCode, res.message);
 		}
+		
 	});
 };
