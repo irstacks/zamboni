@@ -16,6 +16,8 @@ var chalk = require('chalk');
 var year;
 var gameSerialConst = []; // from the beginning. pre season, i think
 var haveFailed = 0;
+var freyaTick = 0;
+var freyaMax = 5;
 
 // Game number formatting helpers.
 function zeroPad(int) {
@@ -89,19 +91,20 @@ function handleSuccess(html) {
 }
 
 function responseHandler(html) {
+	freyaTick++;
 
 	if (html === 404) { handle404(); }
 	else { handleSuccess(html); }
 
 	// recursive shit. but important this is a callback for itself so it waits for the http request to be processed
-	if (gameSerialConst[0] < 3) {
+	if (freyaTick < freyaMax && gameSerialConst[0] < 3) {
 
 		// save progress to ./leftoff.json so we don't have to repeat ourselves in case of interruption
 		var saveMe = JSON.stringify({year: year, gameSerial: gameSerialConst});
 		data.saveToFile('./leftoff.json', saveMe, data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler));
 	
 	// Move a year earlier unless arbitrary stop. 
-	} else if (year > 2007) {
+	} else if (freyaTick < freyaMax && year > 2007) {
 
 		year = year-1;
 		gameSerialConst = [1,0,1];
