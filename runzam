@@ -1,0 +1,8 @@
+#!/bin/bash
+
+NODEPATH="$HOME"/.nvm/current/bin/node
+# so it runs with relative path for writering
+pushd $HOME/got/tron/zamboni;
+exec $NODEPATH app.js;
+popd; 
+

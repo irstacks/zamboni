@@ -17,7 +17,7 @@ var year;
 var gameSerialConst = []; // from the beginning. pre season, i think
 var haveFailed = 0;
 var freyaTick = 0;
-var freyaMax = 5;
+var freyaMax = 3;
 
 // Game number formatting helpers.
 function zeroPad(int) {
@@ -95,36 +95,41 @@ function responseHandler(html) {
 
 	if (html === 404) { handle404(); }
 	else { handleSuccess(html); }
-
+	
+	if (freyaTick < freyaMax) {
 	// recursive shit. but important this is a callback for itself so it waits for the http request to be processed
-	if (freyaTick < freyaMax && gameSerialConst[0] < 3) {
+		if (gameSerialConst[0] < 3) {
 
-		// save progress to ./leftoff.json so we don't have to repeat ourselves in case of interruption
-		var saveMe = JSON.stringify({year: year, gameSerial: gameSerialConst});
-		data.saveToFile('./leftoff.json', saveMe, data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler));
+			// save progress to ./leftoff.json so we don't have to repeat ourselves in case of interruption
+			var saveMe = JSON.stringify({year: year, gameSerial: gameSerialConst});
+			data.saveToFile('./leftoff.json', saveMe, data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler));
 	
-	// Move a year earlier unless arbitrary stop. 
-	} else if (freyaTick < freyaMax && year > 2007) {
+		// Move a year earlier unless arbitrary stop. 
+		} else if (year > 2007) {
 
-		year = year-1;
-		gameSerialConst = [1,0,1];
+			year = year-1;
+			gameSerialConst = [1,0,1];
 
-		// make sure we got the yearly folders in there
-		var yearsfolder = year.toString() + (year + 1).toString();
-		fs.ensureDirSync('./dataOut/' + yearsfolder);
-		fs.ensureDirSync('./failOut/' + yearsfolder);
+			// make sure we got the yearly folders in there
+			var yearsfolder = year.toString() + (year + 1).toString();
+			fs.ensureDirSync('./dataOut/' + yearsfolder);
+			fs.ensureDirSync('./failOut/' + yearsfolder);
 
-		var saveMe = JSON.stringify({year: year, gameSerial: gameSerialConst});
-		data.saveToFile('./leftoff.json', saveMe, data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler));
-		return console.log('Finished with the games you ordered.');
+			var saveMe = JSON.stringify({year: year, gameSerial: gameSerialConst});
+			data.saveToFile('./leftoff.json', saveMe, data.getFromUrl(gameUrl.byYearAndGame(year, makeGameNum(gameSerialConst)), responseHandler));
+			return console.log('Finished with the games you ordered.');
 	
-	// In the name of love, stop. 
+		// In the name of love, stop. 
+		} else {
+			var saveMe = JSON.stringify({year: year-1, gameSerial: [1,0,1]});
+			data.saveToFile('./leftoff.json', saveMe);
+			return console.log('Finished with the games you ordered.');
+		}
 	} else {
 		var saveMe = JSON.stringify({year: year-1, gameSerial: [1,0,1]});
 		data.saveToFile('./leftoff.json', saveMe);
 		return console.log('Finished with the games you ordered.');
-	}
-}
+	}	
 
 // Do the actual gettering. 
 // data.getFromUrl(exampleUrl, responseHandler); // Turn this on if you want dat live shi. 
