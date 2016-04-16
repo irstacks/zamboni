@@ -4,6 +4,8 @@ var parseable = require('./parseable.js');
 var gameUrl = require('./url-maker.js');
 var log = require ('./log.js');
 var util = require('util');
+var chalk = require('chalk');
+
 
 // var exampleUrl = 'http://www.nhl.com/scores/htmlreports/20152016/PL010003.HTM';
 // var url404 = 'http://www.nhl.com/scores/htmlreports/20152016/PL090003.HTM';
@@ -25,12 +27,12 @@ function zeroPad(int) {
 	}
 }
 function makeGameNum(gameSerial) {
-	console.log('Making game num', zeroPad(gameSerial[0]) + zeroPad(gameSerial[1]) + zeroPad(gameSerial[2]));
+	// console.log('Making game num', zeroPad(gameSerial[0]) + zeroPad(gameSerial[1]) + zeroPad(gameSerial[2]));
 	return zeroPad(gameSerial[0]) + zeroPad(gameSerial[1]) + zeroPad(gameSerial[2]);
 }
 
 function incrementSuccess() {
-	console.log('Incrementing success from ', util.inspect(gameSerialConst));
+	console.log(chalk.green('Incrementing success from ', util.inspect(gameSerialConst)));
 	if (gameSerialConst[2] < 99) {
 		gameSerialConst[2]++;	
 	} else if (gameSerialConst[1] < 99) {
@@ -46,7 +48,7 @@ function incrementSuccess() {
 }
 
 function incrementFailure() {
-	console.log('Incrementing failure from ', util.inspect(gameSerialConst));
+	console.log(chalk.red('Incrementing failure from ', util.inspect(gameSerialConst)));
 
 	if (haveFailed < 4) {
 		gameSerialConst[2]++;
@@ -65,7 +67,7 @@ function incrementFailure() {
 
 // Increment game num counter.
 function handle404() {
-	console.log('Handling 404');
+	console.log(chalk.white.bgRed('Handling 404'));
 	var failOutFolder = './failOut/' + year.toString() + (year + 1).toString() + '/';
 	var whereToSave = failOutFolder + makeGameNum(gameSerialConst).toString() + '.txt';
 	data.saveToFile(whereToSave, "404");
@@ -74,7 +76,7 @@ function handle404() {
 
 // Parse response HTML for game data.
 function handleSuccess(html) {
-	console.log('Handling success');
+	console.log(chalk.green.bgWhite('Handling success'));
 	var dataOutFolder = './dataOut/' + year.toString() + (year + 1).toString() + '/';
 	var whereToSave = dataOutFolder + makeGameNum(gameSerialConst).toString() + '.json';
 	var game = {
@@ -88,8 +90,8 @@ function handleSuccess(html) {
 
 function responseHandler(html) {
 
-	if (html === 404) { console.log('Response handling 404.'); handle404(); }
-	else {console.log('Response handling success.'); handleSuccess(html);}
+	if (html === 404) { handle404(); }
+	else { handleSuccess(html); }
 
 	// recursive shit. but important this is a callback for itself so it waits for the http request to be processed
 	if (gameSerialConst[0] < 3) {
