@@ -125,11 +125,13 @@ function responseHandler(html) {
 			data.saveToFile('./leftoff.json', saveMe);
 			return console.log('Finished with the games you ordered.');
 		}
+
 	} else {
-		var saveMe = JSON.stringify({year: year-1, gameSerial: [1,0,1]});
+		var saveMe = JSON.stringify({year: year, gameSerial: gameSerialConst});
 		data.saveToFile('./leftoff.json', saveMe);
 		return console.log('Finished with the games you ordered.');
 	}	
+}
 
 // Do the actual gettering. 
 // data.getFromUrl(exampleUrl, responseHandler); // Turn this on if you want dat live shi. 
