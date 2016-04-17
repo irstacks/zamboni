@@ -26,15 +26,13 @@ Change the url and/or html hanging out at the top of `app.js`.
 If you use a url instead of html you need to change the `data` method in there too. 
 
 ### What's next?
-- Put the parsed data somewhere better than in json files. __Mongo__ might be an obvious choice since out is already in JSON. Or __Postres__ cuz relational seems to fit the model. 
-- Handle errors better so to not stop the flow, ie. `Segmentation fault: 11`. 
+- [ ] Put the parsed data somewhere better than in json files. __Mongo__ might be an obvious choice since out is already in JSON. Or __Postres__ cuz relational seems to fit the model. 
+
+- [ ] Handle errors better so to not stop the flow, ie. `Segmentation fault: 11`. 
+
+- [ ] Refactor/rebuild app.js w/r/t to knowing now where the games are w/r/t to urls, incrementing more elegantly, perhaps promisifying the callbackery
 
 ## Sketching the Relational Schema
-
-- teams
-- players
-- games
-- events
 
 ```json
 Team: 
@@ -45,7 +43,7 @@ Player:
     id: <int> 1, 
     name: <string> 'STEVEN KAMPFER'
 
-PlayerNumber:
+PlayerNumber: // really?
     player_id: <int> 1,
     team_id: <int> 1,
     year: <int> 2015,
@@ -56,6 +54,7 @@ Game:
     year_start: <int> 2015,
     year_end: <int> 2016,
     game_num: <int> 2, 
+    seasonality: <string> 'Pre' || 'Regular' || 'Playoffs',
     team_home_id: <int> 1,
     team_away_id: <int> 2,
     team_home_game_count: <int> 4,
@@ -72,12 +71,21 @@ Game:
     asses: 'Attendance 15,432 at Bridgestone Arena',
     clocks: 'Start 3:38 CDT; End 6:02 CDT'
 
-Event: 
+GameEvent: 
     id: <int> 1,
     game_id: <int> 1,
-    game_
     game_index: <int> 1,
+    period: <int> 1,
+    str: <string> 'EV', // no idea what this is
+    event_kind: <string> 'PSTR',
+    description: <string> 'MIN won Neu. Zone - MIN #3 COYLE vs WPG #55 SCHEIFELE', // will ~~need~~ want to extract more quantitative information about the event -- which positive/negative outcome for each team, players highlighted, location on ice
+    time_elapsed: <int> 24, // in seconds
+    time_remaining: <int> 47342 // in seconds
 
-
+PlayerEvent:
+    event_id: <int> 1,
+    player_id: <int> 1,
+    team_id: <int> 1,
+    position: <string> 'Center'
 ```
 
