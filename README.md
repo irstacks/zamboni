@@ -28,3 +28,5 @@ If you use a url instead of html you need to change the `data` method in there t
 ### What's next?
 - Put the parsed data somewhere better than in json files. __Mongo__ might be an obvious choice since out is already in JSON. Or __Postres__ cuz relational seems to fit the model. 
 - Handle errors better so to not stop the flow, ie. `Segmentation fault: 11`. 
+
+

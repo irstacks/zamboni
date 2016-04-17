@@ -17,7 +17,7 @@ var year;
 var gameSerialConst = []; // from the beginning. pre season, i think
 var haveFailed = 0;
 var freyaTick = 0;
-var freyaMax = 3;
+var freyaMax = 3; // if you want to unfreya the system, make this number really big.
 
 // Game number formatting helpers.
 function zeroPad(int) {
