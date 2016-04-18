@@ -1,55 +1,57 @@
-// var pgtools = require('pgtools');
-// var Sequelize = require('sequelize');
-// var db = new Sequelize('zamboni-db', null, null, {
-// 	dialect: 'postgres'
-// });
+var pgtools = require('pgtools');
+var util = require('util');
 var models  = require('./models');
+var _ = require('underscore');
 
-// function init() {
-// 	return pgtools.createdb({
-// 	  user: 'zamboni',
-// 	  password: 'zamboni',
-// 	  port: 5432,
-// 	  host: 'localhost'
-// 	}, 'zamboni-db', function (err, res) {
-// 	  if (err) {
-// 	    console.error('Error creating DB. \nIt\s possible the DB already existed.\n'+res);
-// 	    // process.exit(-1);
-// 	  }
-// 	  console.log('Created DB.');
-// 	  // process.exit(0); // success
-// 	});
-// };
+function init() {
+	return pgtools.createdb({
+	  user: 'zamboni',
+	  password: 'zamboni',
+	  port: 5432,
+	  host: 'localhost'
+	}, 'zamboni-db', function (err, res) {
+	  if (err) {
+	    console.error('Error creating DB. \nIt\s possible the DB already existed.\n'+res);
+	    // process.exit(-1);
+	  }
+	  console.log('Created DB.');
 
-// Import models.
-// var Team = db.import(__dirname + '/models/team');
-// 		Team.sync(); // ensure created
-
-// var Player = db.import(__dirname + '/models/player');
-// 		Player.sync();
-
-// var Game = db.import(__dirname + '/models/game');
-// 		Game.sync();
-
-// var TeamPlayer = db.import(__dirname + '/models/team_player');
-// 		TeamPlayer.belongsTo(Team);
-// 		TeamPlayer.belongsTo(Player);
-// 		TeamPlayer.belongsTo(Game);
-// 		TeamPlayer.sync();
-
-
-// Model methods. 
-function findOrCreate(Model, opts) {
-	return models[Model].findOrCreate(opts);
+	  // process.exit(0); // success
+	});
+};
+function dropper() {
+	return pgtools.dropdb({
+	  user: 'zamboni',
+	  password: 'zamboni',
+	  port: 5432,
+	  host: 'localhost'
+	}, 'zamboni-db', function (err, res) {
+	  if (err) {
+	    console.error('Error creating DB. \nIt\s possible the DB already existed.\n'+res);
+	    // process.exit(-1);
+	  }
+	  console.log('Dropped DB.');
+	  // process.exit(0); // success
+	});
 }
 
-function findOne(Model, opts) {
-	return models[Model].findOne(opts);
+var boston = {name: 'BOSTON BRUINS', abbreviation: 'BOS'};
+var florida = {name: 'FLORIDA PANTHERS', abbreviation: 'FLA'};
+
+function findOrCreate(modelArg, optsArg) {
+	return models[modelArg].findOrCreate({where: optsArg});
 }
 
-function findAll(Model) {
-	return models[Model].findAll();
+function getById(modelArg, idArg) {
+
+	// if id arg was bad. 
+	if (typeof idArg !== 'number') { console.log('not a number id!'); return null; }
+	return models[modelArg].findById(idArg);
 }
 
-
-
+module.exports = {
+	init: init,
+	dropper: dropper,
+	findOrCreate: findOrCreate,
+	getById: getById
+}

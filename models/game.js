@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-	var Game = sequelize.define('game', 
+	var Game = sequelize.define('Game', 
 		{
 			id: {
 				type: DataTypes.INTEGER,

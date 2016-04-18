@@ -25,7 +25,8 @@ walker = walk.walk(walkMe);
     		var j = JSON.parse(body);
 
     		// TODO: pass to postgres here.
-    		console.log(util.inspect(j));
+    		// console.log(util.inspect(j));
+         
 
 
     		next();

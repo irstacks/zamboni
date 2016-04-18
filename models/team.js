@@ -1,6 +1,7 @@
 'use strict';
+
 module.exports = function(sequelize, DataTypes) {
-	var Team = sequelize.define('team', 
+	var Team = sequelize.define('Team', 
 		// Attributes.
 		{
 			id: {
