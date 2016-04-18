@@ -89,3 +89,59 @@ PlayerEvent:
     position: <string> 'Center'
 ```
 
+----
+
+### Wiring up Postgres
+
+```
+ia@mh:~/dev/zamboni (relational-pg *%) $ psql
+psql: FATAL:  database "ia" does not exist
+ia@mh:~/dev/zamboni (relational-pg *%) $ psql -d postgres -U postgres -h localhost
+psql: FATAL:  role "postgres" does not exist
+ia@mh:~/dev/zamboni (relational-pg *%) $ createdb
+ia@mh:~/dev/zamboni (relational-pg *%) $ psql -h localhost
+psql (9.5.1)
+Type "help" for help.
+
+ia=# \du
+                                   List of roles
+ Role name |                         Attributes                         | Member of 
+-----------+------------------------------------------------------------+-----------
+ ia        | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+
+ia=# CREATE USER zamboni WITH PASSWORD 'zamboni';
+CREATE ROLE
+ia=# GRANT ALL PRIVILEGES ON DATABASE "zamboni_test" to zamboni;
+ERROR:  database "zamboni_test" does not exist
+ia=# \q
+ia@mh:~/dev/zamboni (relational-pg *%) $ node database.js 
+{ name: undefined,
+  pgErr: 
+   { [error: permission denied to create database]
+     name: 'error',
+     length: 86,
+     severity: 'ERROR',
+     code: '42501',
+     detail: undefined,
+     hint: undefined,
+     position: undefined,
+     internalPosition: undefined,
+     internalQuery: undefined,
+     where: undefined,
+     schema: undefined,
+     table: undefined,
+     column: undefined,
+     dataType: undefined,
+     constraint: undefined,
+     file: 'dbcommands.c',
+     line: '298',
+     routine: 'createdb' } }
+ia@mh:~/dev/zamboni (relational-pg *%) $ psql
+psql (9.5.1)
+Type "help" for help.
+
+ia=# ALTER USER zamboni CREATEDB;
+ALTER ROLE
+ia=# \q
+ia@mh:~/dev/zamboni (relational-pg *%) $ 
+```
