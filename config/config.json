@@ -1,0 +1,10 @@
+{
+	"development": {
+		"database": "zamboni-db",
+		"username": "zamboni",
+		"password": "zamboni",
+		"dialect" : "postgres",
+		"port": 5432,
+		"host": "localhost"
+	}
+}

@@ -13,33 +13,32 @@ var walk = require('walk')
 walkMe = './testStorage/';
 walker = walk.walk(walkMe);
 
-function fileToJSON(body) {
 
-}
+// Walker listeners. 
+// 
+  walker.on("file", function (root, fileStats, next) {
+    if (fileStats.name !== '.DS_Store' && fileStats.name.indexOf('.txt') < 0) {
+    	fs.readFile(walkMe + fileStats.name, 'utf8', function(err, body) {
+    		 
+    		if (err) { console.log('error! ' + err); return next(); }
 
-walker.on("file", function (root, fileStats, next) {
-  if (fileStats.name !== '.DS_Store' && fileStats.name.indexOf('.txt') < 0) {
-  	fs.readFile(walkMe + fileStats.name, 'utf8', function(err, body) {
-  		 
-  		if (err) { console.log('error! ' + err); return next(); }
+    		var j = JSON.parse(body);
 
-  		var j = JSON.parse(body);
-
-  		// TODO: pass to postgres here.
-  		console.log(util.inspect(j));
+    		// TODO: pass to postgres here.
+    		console.log(util.inspect(j));
 
 
-  		next();
-  	});
-  } else {
-  	next();
-  }
-});
+    		next();
+    	});
+    } else {
+    	next();
+    }
+  });
 
-walker.on("errors", function (root, nodeStatsArray, next) {
-  next();
-});
+  walker.on("errors", function (root, nodeStatsArray, next) {
+    next();
+  });
 
-walker.on("end", function () {
-  console.log("Finished walk.");
-});
+  walker.on("end", function () {
+    console.log("Finished walk.");
+  });

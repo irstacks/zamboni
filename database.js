@@ -1,58 +1,55 @@
-var pgtools = require('pgtools')
-var Sequelize = require('sequelize')
-var db = new Sequelize('zamboni-test-db', null, null, {
-	dialect: 'postgres'
-})
+// var pgtools = require('pgtools');
+// var Sequelize = require('sequelize');
+// var db = new Sequelize('zamboni-db', null, null, {
+// 	dialect: 'postgres'
+// });
+var models  = require('./models');
 
-// this is a model
-var Post = db.define('post', {
-	id: {
-		type: Sequelize.INTEGER,
-		primaryKey: true,
-		autoIncrement: true
-	},
-	title: {
-		type: Sequelize.STRING
-	},
-	content: {
-		type: Sequelize.TEXT
-	} 
-	// and other attrs... 
-})
+// function init() {
+// 	return pgtools.createdb({
+// 	  user: 'zamboni',
+// 	  password: 'zamboni',
+// 	  port: 5432,
+// 	  host: 'localhost'
+// 	}, 'zamboni-db', function (err, res) {
+// 	  if (err) {
+// 	    console.error('Error creating DB. \nIt\s possible the DB already existed.\n'+res);
+// 	    // process.exit(-1);
+// 	  }
+// 	  console.log('Created DB.');
+// 	  // process.exit(0); // success
+// 	});
+// };
+
+// Import models.
+// var Team = db.import(__dirname + '/models/team');
+// 		Team.sync(); // ensure created
+
+// var Player = db.import(__dirname + '/models/player');
+// 		Player.sync();
+
+// var Game = db.import(__dirname + '/models/game');
+// 		Game.sync();
+
+// var TeamPlayer = db.import(__dirname + '/models/team_player');
+// 		TeamPlayer.belongsTo(Team);
+// 		TeamPlayer.belongsTo(Player);
+// 		TeamPlayer.belongsTo(Game);
+// 		TeamPlayer.sync();
 
 
-function testPost() {
-	// ensure table has been created if doesn't exist already
-	return Post.sync().then(function() {
-		
-		// create placeholder data
-		var data = {
-			title: 'Hellloooo',
-			content: 'Fill this later'
-		}
-		// create the data in the db
-		Post.create(data).then(function(post) {
-			console.log(post.get()) // check it out
-		})
-	})	
+// Model methods. 
+function findOrCreate(Model, opts) {
+	return models[Model].findOrCreate(opts);
 }
 
-exports.init = function() {
-	pgtools.createdb({
-	  user: 'zamboni',
-	  password: 'zamboni',
-	  port: 5432,
-	  host: 'localhost'
-	}, 'zamboni', function (err, res) {
-	  if (err) {
-	    console.error(err);
-	    process.exit(-1);
-	  }
-	  console.log(res);
-	  process.exit(0); // success
-	});
-};
+function findOne(Model, opts) {
+	return models[Model].findOne(opts);
+}
 
-// init();
+function findAll(Model) {
+	return models[Model].findAll();
+}
 
-// testPost();
+
+
