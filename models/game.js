@@ -7,12 +7,8 @@ module.exports = function(sequelize, DataTypes) {
 				primaryKey: true,
 				autoIncrement: true
 			},
-			year_start: {
+			year: {
 				type: DataTypes.INTEGER // 2015
-				, allowNull: false
-			},
-			year_end: {
-				type: DataTypes.INTEGER // 2016
 				, allowNull: false
 			},
 			game_num: {

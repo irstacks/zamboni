@@ -38,6 +38,10 @@ function dropper() {
 var boston = {name: 'BOSTON BRUINS', abbreviation: 'BOS'};
 var florida = {name: 'FLORIDA PANTHERS', abbreviation: 'FLA'};
 
+function create(modelArg, optsArg) {
+	return models[modelArg].create(opts);
+}
+
 function findOrCreate(modelArg, optsArg) {
 	return models[modelArg].findOrCreate({where: optsArg});
 }
@@ -52,6 +56,7 @@ function getById(modelArg, idArg) {
 module.exports = {
 	init: init,
 	dropper: dropper,
+	create: create,
 	findOrCreate: findOrCreate,
 	getById: getById
 }

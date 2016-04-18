@@ -3,8 +3,9 @@
 var walk = require('walk')
 	, fs = require('fs')
 	, util = require('util')
-	, pg = require('./database.js')
+	, pg = require('./database')
 	, data = require('./data.js')
+  , sec = require('./secretary.js')
 	, walkMe
 	, walker
 	;
@@ -26,10 +27,11 @@ walker = walk.walk(walkMe);
 
     		// TODO: pass to postgres here.
     		// console.log(util.inspect(j));
-         
-
-
-    		next();
+        sec.iEatGamesAndPoopRelationships(j).then(function() {
+          next();
+        })
+      //   sec.iEatGamesAndPoopRelationships(j);
+    		// next();
     	});
     } else {
     	next();
