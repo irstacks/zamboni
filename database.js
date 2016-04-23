@@ -1,6 +1,6 @@
 var pgtools = require('pgtools');
 var util = require('util');
-var models  = require('./models');
+var models  = require('./models'); // uses models/index.js to collect all models in that dir
 var _ = require('underscore');
 
 function init() {

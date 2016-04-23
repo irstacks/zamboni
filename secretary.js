@@ -48,12 +48,14 @@ exports.iEatGamesAndPoopRelationships = function(jsonData){
 			team_away_away_game_count: parseInt(jd.scoreboard.visitor.games.split(' ').pop(), 10),
 			team_home_score: parseInt(jd.scoreboard.home.score, 10),
 			team_away_score: parseInt(jd.scoreboard.visitor.score, 10),
+			
+			// TODO...
 			// was_tie: function() {
 			// 	var usScore = parseInt(jd.scoreboard.home.score, 10);
 			// 	var theirScore = parseInt(jd.scoreboard.visitor.score, 10);
 			// 	return usScore === theirScore ? true : false;
 			// },
-			// // was_tie: // TODO
+			// // was_tie: 
 			// winner_team_id: function() {
 			// 	if (parseInt(jd.scoreboard.home.score, 10) === parseInt(jd.scoreboard.visitor.score, 10)) { return null; } 
 			// 	return parseInt(jd.scoreboard.home.score, 10) > parseInt(jd.scoreboard.visitor.score, 10) ? homeTeam.id : awayTeam.id;
@@ -62,7 +64,7 @@ exports.iEatGamesAndPoopRelationships = function(jsonData){
 			// 	if (parseInt(jd.scoreboard.home.score, 10) === parseInt(jd.scoreboard.visitor.score, 10)) { return null; } 
 			// 	return parseInt(jd.scoreboard.home.score, 10) < parseInt(jd.scoreboard.visitor.score, 10) ? homeTeam.id : awayTeam.id;
 			// },
-			
+			// 
 			asses: jd.meta.assesInSeats,
 			clocks: jd.meta.clocks
 		};
