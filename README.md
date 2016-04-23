@@ -50,7 +50,7 @@ TeamPlayer:
     player_id: <int> 1,
     game_id: <int> 1
 
-PlayerNumber: // really? --> yeah, just safer to not rely on this for IDing players outside of a single game
+Jersey: // really? --> yeah, just safer to not rely on this for IDing players outside of a single game
     player_id: <int> 1,
     team_id: <int> 1,
     year: <int> 2015,
