@@ -44,7 +44,7 @@ Player:
     id: <int> 1,
     name: <string> 'STEVEN KAMPFER' // could break up into first and last but probably not necessary
 
-TeamPlayer: 
+TeamPlayer:
     id: <int> 1,
     team_id: <int> 1,
     player_id: <int> 1,
@@ -113,7 +113,7 @@ Type "help" for help.
 
 ia=# \du
                                    List of roles
- Role name |                         Attributes                         | Member of 
+ Role name |                         Attributes                         | Member of
 -----------+------------------------------------------------------------+-----------
  ia        | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
 
@@ -122,9 +122,9 @@ CREATE ROLE
 ia=# GRANT ALL PRIVILEGES ON DATABASE "zamboni_test" to zamboni;
 ERROR:  database "zamboni_test" does not exist
 ia=# \q
-ia@mh:~/dev/zamboni (relational-pg *%) $ node database.js 
+ia@mh:~/dev/zamboni (relational-pg *%) $ node database.js
 { name: undefined,
-  pgErr: 
+  pgErr:
    { [error: permission denied to create database]
      name: 'error',
      length: 86,
@@ -151,5 +151,6 @@ Type "help" for help.
 ia=# ALTER USER zamboni CREATEDB;
 ALTER ROLE
 ia=# \q
-ia@mh:~/dev/zamboni (relational-pg *%) $ 
+ia@mh:~/dev/zamboni (relational-pg *%) $
 ```
+asdf
