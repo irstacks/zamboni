@@ -153,4 +153,3 @@ ALTER ROLE
 ia=# \q
 ia@mh:~/dev/zamboni (relational-pg *%) $
 ```
-asdf
